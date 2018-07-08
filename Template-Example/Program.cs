@@ -16,9 +16,9 @@ namespace Template_Example
         public string Render(String templateString, Dictionary<String, object> parameters)
         {
             String returnValue = templateString;
-            foreach(String key in parameters.Keys)
+            foreach (String key in parameters.Keys)
             {
-                String patternToReplace = "{{"+key+"}}";
+                String patternToReplace = "{{" + key + "}}";
                 String toReplaceWith = parameters[key].ToString();
 
                 returnValue = returnValue.Replace(patternToReplace, toReplaceWith);
@@ -37,12 +37,13 @@ namespace Template_Example
             foreach (String key in parameters.Keys)
             {
                 Object value = parameters[key];
-                if(value is string)
+                if (value is string)
                 {
                     value = "`" + value.ToString() + "`"; //TODO: SQL Injections, escaping should be handled here.
                 }
                 newParameters[key] = value;
             }
+
             return base.Render(templateString, newParameters);
         }
 
@@ -69,10 +70,11 @@ namespace Template_Example
         {
             var parameters = new Dictionary<string, object>(){
                     { "name", "Vaishnavi" },
-                    { "age", 16 }
+                    { "age", 16 },
+                    {"location", "BC" }
                 };
             Console.WriteLine(new SimpleStringRenderer().Render("Hello {{name}} of age {{age}}!", parameters));
-            Console.WriteLine(new SQLStringRenderer().Render("SELECT name, age from Student where name={{name}} and age={{age}}", parameters));
+            Console.WriteLine(new SQLStringRenderer().Render("SELECT name, age, location from Student where name={{name}} and age={{age}} and location={{location}}", parameters));
             Console.WriteLine(new MustacheRenderer().Render("<html><body><h1>Hello {{name}}</h1>. {{name}}'s Age is <b>{{age}}</b></body></html>", parameters));
             Console.ReadLine();
         }
